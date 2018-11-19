@@ -60,8 +60,8 @@ int main() {
 	Node2* head2 = NULL;//---------------------------------후위연산식 리스트의 첫 노드 주소
 	Node2* tail2 = NULL;//---------------------------------후위연산식 리스트의 마지막 노드 주소
 
-	int size = 0;//----------------------------------------중위리스트의 사이즈를 알기위해서
-	char temp = '\0'; //temp != '\n'의 조건식을 만드려면 매개가 있어야한다.
+	int size=0;//----------------------------------------중위리스트의 사이즈를 알기위해서
+	char temp='\0'; //temp != '\n'의 조건식을 만드려면 매개가 있어야한다.
 	//---------------------------------------------------중위연산식 리스트에 입력받기
 	printf("write num\n");
 	while (temp != '\n') {
@@ -99,51 +99,51 @@ int main() {
 	Operator_Stack s;
 	char returned_operator; // ()시 연산자를 저장하고 옮기기위한 또하나의 temp
 	init(&s);
-
+  size++;
 	while (size) {
-		Node2* newnode2 = (Node2*)malloc(sizeof(Node2));//후위연산식에 새로 투입될 노드들을 위해 while문안에 노드2만들어준다.
+			Node2* newnode2 = (Node2*)malloc(sizeof(Node2));//후위연산식에 새로 투입될 노드들을 위해 while문안에 노드2만들어준다.
 
-		if (head2 == NULL)
-			head2 = newnode2;
-
-		if (isdigit(temp2->character) || temp2->character == '.')//수와 '.'은 operator stack에 쌓지 않고 바로 node2로 이동
-		{
-			newnode2->character = temp2->character;
-		}
-		else
-		{
-			switch (temp2->character) //tok = character
+			if (head2 == NULL)
+				head2 = newnode2;
+      
+      else{
+			if (isdigit(temp2->character)||temp2->character == '.')//수와 '.'은 operator stack에 쌓지 않고 바로 node2로 이동
 			{
-			case '(':
-				push(&s, temp2->character);
-				break;
-
-			case ')':
-				returned_operator = pop(&s);
-				while (returned_operator != '(') {
-					newnode2->character = returned_operator;
-					returned_operator = pop(&s);
-				}
-				break;
-
-			case '+': case '-':
-			case '*': case '/':
-				while (!isEmpty(&s) && (precedence(temp2->character) <= precedence(peek(&s))))
-					newnode2->character = pop(&s);
-
-				push(&s, temp2->character);
-				break;
-
-			default:
 				newnode2->character = temp2->character;
-				break;
 			}
-			tail2->next = newnode2;
-		}
-		tail2 = newnode2;
-		temp2 = temp2->next;
-		newnode2->next = NULL;
-		size--;
+			else
+			{
+				switch (temp2->character) //tok = character
+				{
+				case '(':
+					push(&s, temp2->character);
+					break;
+
+				case ')':
+					returned_operator = pop(&s);
+					while (returned_operator != '(') {
+						newnode2->character = returned_operator;
+						returned_operator = pop(&s);
+					}
+					break;
+
+				case '+': case '-':
+				case '*': case '/':
+					while (!isEmpty(&s) && (precedence(temp2->character) <= precedence(peek(&s))))
+						newnode2->character = pop(&s);
+
+					push(&s, temp2->character);
+					break;
+
+				default:
+					newnode2->character = temp2->character;
+					break;
+				}
+			}
+      tail2->next = newnode2;
+      }
+		  tail2 = newnode2;
+			size--;
 	}
 
 	while (isEmpty(&s)) {
@@ -152,7 +152,8 @@ int main() {
 	}
 	//---------------------------------------------------중위연산식 리스트를 후위연산식 리스트에 바꾸어넣기.
 	//---------------------------------------------------후위연산식 출력해보기
-	Node2* temp3 = head2; //HEAD 이동시 head고유의 주소를 잊어버리므로 temp1을 만들어 이동시키며 출력함.
+Node2* temp3 = (Node2*)malloc(sizeof(Node2)); //HEAD 이동시 head고유의 주소를 잊어버리므로 temp1을 만들어 이동시키며 출력함.
+	temp3 = head2;
 
 	while (temp3 != tail2) {
 		printf("%c ", temp3->character);

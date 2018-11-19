@@ -95,18 +95,13 @@ int main() {
 	temp = '\0';
 	Node* temp2 = (Node*)malloc(sizeof(Node));//HEAD 이동시 head고유의 주소를 잊어버리므로 temp2을 만들어 이동시키며 값을 얻는다..
 	temp2 = head;
-
 	Operator_Stack s;
 	char returned_operator; // ()시 연산자를 저장하고 옮기기위한 또하나의 temp
 	init(&s);
-  size++;
+  
 	while (size) {
 			Node2* newnode2 = (Node2*)malloc(sizeof(Node2));//후위연산식에 새로 투입될 노드들을 위해 while문안에 노드2만들어준다.
 
-			if (head2 == NULL)
-				head2 = newnode2;
-      
-      else{
 			if (isdigit(temp2->character)||temp2->character == '.')//수와 '.'은 operator stack에 쌓지 않고 바로 node2로 이동
 			{
 				newnode2->character = temp2->character;
@@ -140,9 +135,13 @@ int main() {
 					break;
 				}
 			}
-      tail2->next = newnode2;
-      }
-		  tail2 = newnode2;
+      if (head2 == NULL)
+			  head2 = newnode2;
+		  else
+			  tail2->next = newnode2;
+
+      tail2 = newnode2;
+      temp2 = temp2->next;
 			size--;
 	}
 
@@ -167,23 +166,5 @@ Node2* temp3 = (Node2*)malloc(sizeof(Node2)); //HEAD 이동시 head고유의 주소를 잊
 	//---------------------------------------------------계산하기
 	//---------------------------------------------------출력
 	//---------------------------------------------------출력
-	/*char* str;
-	str = (char*)malloc(sizeof(char)*size);
-	int i;
-	printf("write num\n");
-	scanf("%d", &i);
-	char* text;
-	text = (char*)malloc(sizeof(text)*i);
-
-	for (int a = 0; a < i; a++)
-	{
-		if (a == 0)
-			text[0] = 'a';
-		else
-			text[a] = text[a - 1] + 1;
-		printf("%c\n", text[a]);
-	}
-	free(text);
-*/
 	return 0;
 }
